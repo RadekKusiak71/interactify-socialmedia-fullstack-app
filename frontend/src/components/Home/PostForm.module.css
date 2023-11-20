@@ -1,0 +1,113 @@
+.post-form-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #00000063;
+}
+
+.post-form-container {
+    width: 600px;
+    min-height: 400px;
+    height: fit-content;
+    padding: 20px;
+    background-color: #393E46;
+    border-radius: 20px;
+    z-index: 9999;
+}
+
+.post-form-header {
+    height: fit-content;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+}
+
+.cancel-button>img {
+    height: 50px;
+}
+
+.cancel-button {
+    all: unset;
+    cursor: pointer;
+}
+
+.cancel-button:hover {
+    background-color: #d6d6d663;
+    border-radius: 10px;
+}
+
+.post-form {
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.post-form>textarea {
+    all: unset;
+    width: 100%;
+    min-height: 100px;
+    height: fit-content;
+    word-break: break-all;
+    padding-top: 10px;
+    font-size: 18px;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.post-form-attachement {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: auto;
+    transition: 0.3s ease-in-out;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px;
+}
+
+.post-form-attachement:hover {
+    background-color: #00000063;
+}
+
+.post-form-file-upload {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.post-form-button {
+    all: unset;
+    width: 100%;
+    height: 50px;
+    text-align: center;
+    background-color: #4b5059;
+    font-family: 'Open Sans', sans-serif;
+    cursor: pointer;
+    color: #707783;
+    transition: 0.3s ease-in-out;
+    font-size: 19px;
+    border-radius: 10px;
+}
+
+.post-form-button:hover {
+    background-color: #5c626c;
+    color: white;
+}

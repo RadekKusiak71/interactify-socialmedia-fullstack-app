@@ -1,0 +1,154 @@
+.post-container {
+    width: 700px;
+    height: fit-content;
+    padding: 10px;
+    margin: auto;
+    margin-top: 50px;
+}
+
+.post-data {
+    height: 80px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.post-profile-image {
+    width: 80px;
+    height: fit-content;
+    display: flex;
+    align-items: center
+}
+
+.post-profile-image>a {
+    height: 100%;
+    width: 100%;
+}
+
+.post-profile-image>a>img {
+    height: 50px;
+    width: 50px;
+    border-radius: 10px;
+}
+
+.post-user-data {
+    width: 400px;
+    height: 80px;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    padding-top: 5px;
+}
+
+.post-data-options {
+    width: 320px;
+    height: 80px;
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 5px;
+}
+
+.post-data-options>img {
+    height: 40px;
+    width: 40px;
+    cursor: pointer;
+}
+
+.post-body {
+    height: fit-content;
+    padding: 10px;
+}
+
+.post-body-description {
+    min-height: 30px;
+    margin: 0 0 10px 0;
+}
+
+.post-comment-link {
+    width: 100%;
+}
+
+.post-comment-form {
+    padding: 5px 10px 5px 10px;
+    width: 98%;
+    margin: auto;
+    height: 70px;
+    background-color: #393E46;
+    border-radius: 15px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.post-comment-form>a:nth-child(:last-child) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.post-comment-form>a>img {
+    height: 50px;
+    border-radius: 10px;
+}
+
+.post-reactions {
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.post-reactions-icons {
+    width: 50%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+}
+
+.post-reactions-icons>img {
+    cursor: pointer;
+}
+
+.post-reactions-counters {
+    width: 50%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+}
+
+.post-form-link {
+    width: 100%;
+}
+
+.post-comment-input {
+    all: unset;
+    width: 95%;
+    height: 50px;
+    padding-left: 15px;
+    background-color: #4b5059;
+    font-family: 'Open Sans', sans-serif;
+    cursor: pointer;
+    color: #707783;
+    transition: 0.3s ease-in-out;
+    font-size: 16px;
+    border-radius: 10px;
+}
+
+
+
+.post-attachement {
+    width: 100%;
+    overflow: hidden;
+}
+
+.attachment-image {
+    width: 100%;
+    height: auto;
+    max-height: 800px;
+    border-radius: 5px;
+    display: block;
+}

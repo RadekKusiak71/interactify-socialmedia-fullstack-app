@@ -1,0 +1,65 @@
+.group-badge {
+    min-height: 200px;
+    max-width: 800px;
+    min-width: 400px;
+    height: fit-content;
+    margin: auto;
+    background-color: #393E46;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 10px auto 10px auto;
+}
+
+.group-badge>a {
+    height: auto;
+    width: auto;
+}
+
+.group-data {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-shrink: 1;
+    gap: 10px;
+}
+
+.group-image {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.group-image>img {
+    height: 100%;
+    width: 100%;
+    border-radius: 1000px;
+}
+
+.group-info {
+    width: 600px;
+    height: fit-content;
+    padding-left: 20px;
+}
+
+.group-info>h2 {
+    font-size: 30px;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.group-info>p {
+    font-size: 16px;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.group-description {
+    width: 100%;
+    padding: 20px 10px 20px 10px;
+}
+
+.group-description>p {
+    font-family: 'Open Sans', sans-serif;
+}

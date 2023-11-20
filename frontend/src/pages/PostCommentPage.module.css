@@ -1,0 +1,32 @@
+.commentpage-navigation {
+    width: 700px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2%;
+}
+
+.commentpage-navigation>a:first-child {
+    width: 150px;
+    height: 100px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.commentpage-navigation>a:last-child {
+    width: 150px;
+    height: 100px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.commentpage-navigation>a:first-child>img {
+    width: 200px;
+}
+
+.commentpage-navigation>a:last-child>img {
+    width: 60px;
+}
