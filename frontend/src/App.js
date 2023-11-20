@@ -26,9 +26,9 @@ function App() {
                 <Route exact path='/' element={<HomePage />} />
                 <Route path="/groups" element={<Groups />} />
                 <Route element={<ProfileHeaderDisplays />}>
-                  <Route path="/account/:username/" element={<Profile />} />
-                  <Route path="/account/:username/saved/" element={<SavedPosts />} />
-                  <Route path="/account/:username/shared/" element={<SharedPosts />} />
+                  <Route path="/account/:username" element={<Profile />} />
+                  <Route path="/account/:username/saved" element={<SavedPosts />} />
+                  <Route path="/account/:username/shared" element={<SharedPosts />} />
                 </Route>
               </Route>
               <Route path='/:postID/comments' element={<PostCommentPage />} />

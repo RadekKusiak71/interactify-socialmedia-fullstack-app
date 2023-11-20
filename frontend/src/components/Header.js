@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import classes from './Header.module.css'
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useLocation } from 'react-router-dom'
 import interactifyLogo from '../assets/interactify-transparent-logo.png'
 import accountIcon from '../assets/account.svg'
 import homeIcon from '../assets/home.svg'
@@ -14,7 +14,7 @@ import AuthContext from '../context/AuthContext'
 
 const Header = () => {
     const { userLogout, user } = useContext(AuthContext);
-
+    const { pathname } = useLocation();
     return (
         <>
             <header>
