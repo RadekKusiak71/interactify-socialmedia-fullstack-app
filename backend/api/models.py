@@ -11,8 +11,24 @@ def user_post_directory_path(instance, filename):
     return os.path.join(instance.profile.user.username, filename)
 
 
+def chat_images_directory_path(instance, filename):
+    return os.path.join(instance.chat_name, filename)
+
+
+def messages_images_directory_path(instance, filename):
+    return os.path.join(instance.chat.chat_name, filename)
+
+
 def group_directory_path(instance, filename):
     return os.path.join(instance.group_name, filename)
+
+
+def chat_picture_upload_path(instance, filename):
+    return f'chat_pictures/{filename}'
+
+
+def attachment_upload_path(instance, filename):
+    return f'chat_attachments/{filename}'
 
 
 class Profile(models.Model):
@@ -30,7 +46,7 @@ class Profile(models.Model):
     saved_posts = models.ManyToManyField(
         'Post', related_name='saved_posts', blank=True)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'Profile of {self.user.username}'
 
     def followers_count(self):
@@ -55,7 +71,7 @@ class Group(models.Model):
     members = models.ManyToManyField(Profile, related_name='groups')
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.group_name
 
     def members_count(self):
@@ -71,7 +87,7 @@ class Post(models.Model):
     likes = models.ManyToManyField(
         User, related_name="liked_posts", through='PostLike')
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'Post by {self.profile.user.username} - {self.created_date}'
 
     def calculate_likes_count(self):
@@ -90,7 +106,7 @@ class Comment(models.Model):
     likes = models.ManyToManyField(
         User, related_name="liked_comments", through='CommentLike')
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'Comment by {self.profile.user.username} - {self.created_date}'
 
     def calculate_likes_count(self):
@@ -111,5 +127,30 @@ class CommentLike(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_date = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'{self.user.username} likes comment: {self.comment.id}'
+
+
+class Chat(models.Model):
+    creator = models.ForeignKey(
+        Profile, on_delete=models.CASCADE, related_name='creator')
+    members = models.ManyToManyField('Profile', related_name='members')
+    created_at = models.DateTimeField(auto_now_add=True)
+    chat_name = models.CharField(max_length=120, null=True, blank=True)
+    chat_picture = models.ImageField(
+        upload_to=chat_picture_upload_path, null=True, blank=True)
+
+    def __str__(self) -> str:
+        return self.chat_name
+
+
+class Message(models.Model):
+    chat = models.ForeignKey(Chat, on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, on_delete=models.DO_NOTHING)
+    body = models.TextField(null=True, blank=True)
+    attachement = models.ImageField(
+        upload_to=attachment_upload_path, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return f'chat message of {self.chat.chat_name} chat'

@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
-from .models import Profile, Group, Post, Comment, PostLike, CommentLike
+from .models import Profile, Group, Post, Comment, PostLike, CommentLike, Chat, Message
 
 
 class TestModels(TestCase):
@@ -13,6 +13,11 @@ class TestModels(TestCase):
             profile=self.profile, body='Test post body')
         self.comment = Comment.objects.create(
             profile=self.profile, post=self.post, body='Test comment body')
+        # New setup for Chat and Message models
+        self.chat = Chat.objects.create(
+            creator=self.profile, chat_name='Test Chat')
+        self.message = Message.objects.create(
+            chat=self.chat, profile=self.profile, body='Test Message Body')
 
     def test_profile_creation(self):
         self.assertEqual(self.profile.user.username, 'test_user')
@@ -42,8 +47,7 @@ class TestModels(TestCase):
         like = CommentLike.objects.create(comment=self.comment, user=self.user)
         self.assertEqual(like.comment, self.comment)
         self.assertEqual(like.user, self.user)
-        self.assertEqual(str(like), f'{like.user.username} likes comment: {
-                         like.comment.id}')
+        self.assertEqual(str(like), f'{like.user.username} likes comment: {like.comment.id}')
 
     def test_profile_counts(self):
         # Adding a follower to the profile
@@ -82,3 +86,15 @@ class TestModels(TestCase):
         like = CommentLike.objects.create(
             comment=self.comment, user=self.user)  # Liking the comment
         self.assertEqual(self.comment.calculate_likes_count(), 1)
+
+    def test_chat_creation(self):
+        self.assertEqual(self.chat.creator, self.profile)
+        self.assertEqual(self.chat.members.count(), 0)
+        self.assertEqual(self.chat.chat_name, 'Test Chat')
+        self.assertEqual(str(self.chat), 'Test Chat')
+
+    def test_message_creation(self):
+        self.assertEqual(self.message.chat, self.chat)
+        self.assertEqual(self.message.profile, self.profile)
+        self.assertEqual(self.message.body, 'Test Message Body')
+        self.assertEqual(str(self.message), f'chat message of {self.chat.chat_name} chat')
