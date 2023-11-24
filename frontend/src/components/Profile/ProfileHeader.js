@@ -28,16 +28,38 @@ const ProfileHeader = () => {
                     setFollwed(true)
                 }
             } else {
-                console.log(data)
+                setFollwed(false)
             }
         } catch (err) {
             console.log(err)
         }
     }, [setUserData, user.profile_id, username])
 
+    const followProfile = async () => {
+        setFollwed(!followed)
+        try {
+            let response = await fetch(`http://127.0.0.1:8000/api/profiles/profile/${username}/follow/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ 'user_id': user.user_id })
+            })
+            let data = await response.json()
+            if (response.ok) {
+                fetchProfileData()
+            } else {
+                setFollwed(!followed)
+            }
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
     useEffect(() => {
         fetchProfileData()
     }, [fetchProfileData])
+
     return (
         <div className={classes['profile-headers']}>
             <div className={classes['profile-image']}>
@@ -64,11 +86,11 @@ const ProfileHeader = () => {
                     <>
                         {followed ? (
                             <>
-                                <button type='button' className={classes['profile-buttons-active']}>Followed</button>
+                                <button onClick={() => followProfile()} type='button' className={classes['profile-buttons-active']}>Followed</button>
                             </>
                         ) : (
                             <>
-                                <button type='button'>Follow</button>
+                                <button onClick={() => followProfile()} type='button' className={classes['profile-buttons-unactive']}>Follow</button>
                             </>
                         )}
                         <button type='button' className={classes['profile-buttons-unactive']}>Message</button>

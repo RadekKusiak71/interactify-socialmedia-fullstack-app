@@ -24,6 +24,8 @@ class ProfileViewSet(viewsets.ViewSet):
 
     get_profile_posts: List of posts that certain user created, need username provided in url
 
+    follow: Function performing a follow or unfollow action depends on actual state of this data
+
     """
 
     def list(self, request):
@@ -36,12 +38,16 @@ class ProfileViewSet(viewsets.ViewSet):
             profile = Profile.objects.get(id=pk)
             serializer = ProfileSerializer(profile, many=False)
             return Response(serializer.data)
+
         except User.DoesNotExist:
             return Response({'message': 'User does not exist'}, status=status.HTTP_404_NOT_FOUND)
+
         except Profile.DoesNotExist:
             return Response({'message': 'Profile does not exist'}, status=status.HTTP_404_NOT_FOUND)
+
         except ValueError:
             return Response({'message': 'Invalid ID format'}, status=status.HTTP_400_BAD_REQUEST)
+
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -52,12 +58,16 @@ class ProfileViewSet(viewsets.ViewSet):
             profile = Profile.objects.get(user=user)
             serializer = ProfileSerializer(profile, many=False)
             return Response(serializer.data)
+
         except User.DoesNotExist:
             return Response({'message': 'User does not exist'}, status=status.HTTP_404_NOT_FOUND)
+
         except Profile.DoesNotExist:
             return Response({'message': 'Profile does not exist'}, status=status.HTTP_404_NOT_FOUND)
+
         except ValueError:
             return Response({'message': 'Invalid ID format'}, status=status.HTTP_400_BAD_REQUEST)
+
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -69,10 +79,13 @@ class ProfileViewSet(viewsets.ViewSet):
             shared_posts = profile.shared_posts.all()
             serializer = PostSerializer(shared_posts, many=True)
             return Response(serializer.data)
+
         except User.DoesNotExist:
             return Response({'message': 'User dose not exists'}, status=status.HTTP_404_NOT_FOUND)
+
         except Profile.DoesNotExist:
             return Response({'message': 'Profile dose not exists'}, status=status.HTTP_404_NOT_FOUND)
+
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -84,10 +97,13 @@ class ProfileViewSet(viewsets.ViewSet):
             shared_posts = profile.saved_posts.all()
             serializer = PostSerializer(shared_posts, many=True)
             return Response(serializer.data)
+
         except User.DoesNotExist:
             return Response({'message': 'User dose not exists'}, status=status.HTTP_404_NOT_FOUND)
+
         except Profile.DoesNotExist:
             return Response({'message': 'Profile dose not exists'}, status=status.HTTP_404_NOT_FOUND)
+
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -99,10 +115,46 @@ class ProfileViewSet(viewsets.ViewSet):
             posts = Post.objects.filter(profile=profile)
             serializer = PostSerializer(posts, many=True)
             return Response(serializer.data)
+
         except User.DoesNotExist:
             return Response({'message': 'User dose not exists'}, status=status.HTTP_404_NOT_FOUND)
+
         except Profile.DoesNotExist:
             return Response({'message': 'Profile dose not exists'}, status=status.HTTP_404_NOT_FOUND)
+
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @action(detail=False, methods=['POST'], url_path='profile/(?P<username>[^/.]+)/follow')
+    def follow(self, request, username=None):
+        try:
+            # User that clicked follow button
+            user_id = request.data.get('user_id')
+            user1 = User.objects.get(id=user_id)
+            profile_action = Profile.objects.get(user=user1)
+
+            # User that action is performed on
+            user = User.objects.get(username=username)
+            profile = Profile.objects.get(user=user)
+
+            # Performing a operations to manage followers/followed accounts on both accounts
+            if profile_action.followed_accounts.filter(id=profile.id).exists():
+                profile_action.followed_accounts.remove(profile)
+                profile.followers.remove(profile_action)
+                profile.save()
+                return Response({'message': 'Unfollowed'}, status=status.HTTP_200_OK)
+            else:
+                profile_action.followed_accounts.add(profile)
+                profile.followers.add(profile_action)
+                profile.save()
+                return Response({'message': 'Followed'}, status=status.HTTP_200_OK)
+
+        except User.DoesNotExist:
+            return Response({'message': 'User dose not exists'}, status=status.HTTP_404_NOT_FOUND)
+
+        except Profile.DoesNotExist:
+            return Response({'message': 'Profile dose not exists'}, status=status.HTTP_404_NOT_FOUND)
+
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
