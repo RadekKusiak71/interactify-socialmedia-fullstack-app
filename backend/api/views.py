@@ -7,7 +7,6 @@ from .serializers import RegisterSerializer, GroupsSerializer, PostSerializer, C
 from .models import Profile, Group, Post, PostLike, Comment, CommentLike
 from django.contrib.auth.models import User
 
-
 class ProfileViewSet(viewsets.ViewSet):
 
     """
@@ -17,6 +16,8 @@ class ProfileViewSet(viewsets.ViewSet):
     list: Retrievie a list of all comments
 
     retrieve: Retrieve a certain user depends on id provided in url
+
+    destroy: Delete a instance with certain pk
 
     retrieve_by_name: Retrieve a certain user depends on username provided in url
 
@@ -50,6 +51,11 @@ class ProfileViewSet(viewsets.ViewSet):
 
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def destroy(self, request, pk=None):
+        profile = get_object_or_404(Profile, id=pk)
+        profile.delete()
+        return Response({'message': 'Profile successfully deleted'}, status=status.HTTP_204_NO_CONTENT)
 
     @action(detail=False, methods=['get'], url_path='username/(?P<username>[^/.]+)')
     def retrieve_by_name(self, request, username=None):
@@ -168,6 +174,8 @@ class CommentViewSet(viewsets.ViewSet):
 
     create: Create a new comment.
 
+    destroy: Delete a instance with certain pk
+
     post_comments: Retrieve comments for a specific post.
 
     """
@@ -181,6 +189,11 @@ class CommentViewSet(viewsets.ViewSet):
         comment = Comment.objects.get(id=pk)
         serializer = CommentSerializer(comment, many=False)
         return Response(serializer.data)
+
+    def destroy(self, request, pk=None):
+        comment = get_object_or_404(Comment, id=pk)
+        comment.delete()
+        return Response({'message': 'Comment successfully deleted'}, status=status.HTTP_204_NO_CONTENT)
 
     def create(self, request, pk=None):
         try:
@@ -264,6 +277,8 @@ class PostViewSet(viewsets.ViewSet):
 
     retrieve: Retrieve details of a specific post.
 
+    destroy: Delete a instance with certain pk
+
     post_reaction: Handle reactions (likes/unlikes) on a post.
 
     post_share: Share/unshare a post.
@@ -314,6 +329,11 @@ class PostViewSet(viewsets.ViewSet):
 
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def destroy(self, request, pk=None):
+        post = get_object_or_404(Post, id=pk)
+        post.delete()
+        return Response({'message': 'Post successfully deleted'}, status=status.HTTP_204_NO_CONTENT)
 
     @action(detail=False, methods=['post'], url_path='post_reaction/(?P<post_id>[^/.]+)')
     def post_reaction(self, request, post_id):
@@ -420,12 +440,19 @@ class GroupViewSet(viewsets.ViewSet):
     Handles operations related to groups.
 
     list: Retrieve a list of all groups.
+
+    destroy: Delete a instance with certain pk
     """
 
     def list(self, request):
         queryset = Group.objects.all()
         serializer = GroupsSerializer(queryset, many=True)
         return Response(serializer.data)
+
+    def destroy(self, request, pk=None):
+        group = get_object_or_404(Group, id=pk)
+        group.delete()
+        return Response({'message': 'Group successfully deleted'}, status=status.HTTP_204_NO_CONTENT)
 
 # RegisterViewSet
 

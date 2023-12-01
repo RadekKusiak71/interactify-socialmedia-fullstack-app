@@ -129,28 +129,3 @@ class CommentLike(models.Model):
 
     def __str__(self) -> str:
         return f'{self.user.username} likes comment: {self.comment.id}'
-
-
-class Chat(models.Model):
-    creator = models.ForeignKey(
-        Profile, on_delete=models.CASCADE, related_name='creator')
-    members = models.ManyToManyField('Profile', related_name='members')
-    created_at = models.DateTimeField(auto_now_add=True)
-    chat_name = models.CharField(max_length=120, null=True, blank=True)
-    chat_picture = models.ImageField(
-        upload_to=chat_picture_upload_path, null=True, blank=True)
-
-    def __str__(self) -> str:
-        return self.chat_name
-
-
-class Message(models.Model):
-    chat = models.ForeignKey(Chat, on_delete=models.CASCADE)
-    profile = models.ForeignKey(Profile, on_delete=models.DO_NOTHING)
-    body = models.TextField(null=True, blank=True)
-    attachement = models.ImageField(
-        upload_to=attachment_upload_path, null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self) -> str:
-        return f'chat message of {self.chat.chat_name} chat'

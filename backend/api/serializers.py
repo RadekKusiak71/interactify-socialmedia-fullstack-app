@@ -5,7 +5,6 @@ from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
 from .models import Profile, Group, Post, Comment
 
-
 class ProfileSerializer(serializers.ModelSerializer):
 
     followers_count = serializers.IntegerField()

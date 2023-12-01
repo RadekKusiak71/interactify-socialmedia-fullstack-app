@@ -4,13 +4,13 @@ import profileIcon from '../../assets/profile.svg'
 import { useParams } from 'react-router-dom'
 import timeAgo from '../../utils/timeAgo'
 import AuthContext from '../../context/AuthContext'
+import { motion } from 'framer-motion'
 
 const ProfileHeader = () => {
     const { username } = useParams()
     const { user } = useContext(AuthContext)
     const [userData, setUserData] = useState([])
     const [followed, setFollwed] = useState(false)
-
 
     const fetchProfileData = useCallback(async () => {
         try {
@@ -45,7 +45,6 @@ const ProfileHeader = () => {
                 },
                 body: JSON.stringify({ 'user_id': user.user_id })
             })
-            let data = await response.json()
             if (response.ok) {
                 fetchProfileData()
             } else {
@@ -61,7 +60,7 @@ const ProfileHeader = () => {
     }, [fetchProfileData])
 
     return (
-        <div className={classes['profile-headers']}>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className={classes['profile-headers']}>
             <div className={classes['profile-image']}>
                 {userData.profile_image ? (
                     <img src={`http://127.0.0.1:8000${userData.profile_image}/`} alt='profile' />
@@ -80,7 +79,7 @@ const ProfileHeader = () => {
                 {userData.username = user.username ? (
                     <>
                         <button type='button' className={classes['profile-buttons-unactive']} disabled>Follow</button>
-                        <button type='button' className={classes['profile-buttons-unactive']} disabled>Message</button>
+
                     </>
                 ) : (
                     <>
@@ -93,12 +92,11 @@ const ProfileHeader = () => {
                                 <button onClick={() => followProfile()} type='button' className={classes['profile-buttons-unactive']}>Follow</button>
                             </>
                         )}
-                        <button type='button' className={classes['profile-buttons-unactive']}>Message</button>
                     </>
                 )
                 }
             </div >
-        </div >
+        </motion.div >
     )
 }
 
